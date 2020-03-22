@@ -47,10 +47,14 @@ def detect_change(file):
 
 
 def monitor_and_log(file):
-    if detect_change(file):
-        update_latest_change_time(file)
-        get_diff(file)
-        create_backup(file)
+    while True:
+        try:
+            if detect_change(file):
+                update_latest_change_time(file)
+                get_diff(file)
+                create_backup(file)
+        except KeyboardInterrupt:
+            os._exit(0)
 
 
 latest_change_times = {}
@@ -61,7 +65,7 @@ for file in files_to_monitor:
     update_latest_change_time(file)
     create_backup(file)
 
+
 if __name__ == '__main__':
-    while True:
-        pool = Pool(len(files_to_monitor))
-        pool.map(monitor_and_log, files_to_monitor)
+    pool = Pool(processes=len(files_to_monitor))
+    pool.map(monitor_and_log, files_to_monitor)
