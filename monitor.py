@@ -54,7 +54,7 @@ def monitor_and_log(file):
                 get_diff(file)
                 create_backup(file)
         except KeyboardInterrupt:
-            os._exit(0)
+            return KeyboardInterrupt
 
 
 latest_change_times = {}
@@ -67,5 +67,8 @@ for file in files_to_monitor:
 
 
 if __name__ == '__main__':
-    pool = Pool(processes=len(files_to_monitor))
-    pool.map(monitor_and_log, files_to_monitor)
+    try:
+        pool = Pool(processes=len(files_to_monitor))
+        pool.map(monitor_and_log, files_to_monitor)
+    except KeyboardInterrupt:
+        os._exit(0)
