@@ -24,7 +24,7 @@ def get_diff(file):
     with open(file, 'r') as f:
         changed_file_lines = f.read().strip().splitlines()
         
-    with open(BCKP_DIR+file, 'r') as f:
+    with open(BCKP_DIR+file.split('/')[-1], 'r') as f:
         bckp_file_lines = f.read().strip().splitlines()
 
     logging.info('')
